@@ -7,7 +7,7 @@ namespace DotsStorageManager
 {
     public class StorageManger : IStorageManager
     {
-        public void LoadData(string key, Action<IStorageData> callback)
+        public void LoadData<T>(string key, Action<T> callback) where T : IStorageData
         {
             string path = BuildPath(key);
             string json = "";
@@ -17,7 +17,7 @@ namespace DotsStorageManager
                 json = fileStream.ReadToEnd();
             }
             
-            IStorageData data = JsonUtility.FromJson<IStorageData>(json);
+            T data = JsonUtility.FromJson<T>(json);
 
             callback?.Invoke(data);
         }
