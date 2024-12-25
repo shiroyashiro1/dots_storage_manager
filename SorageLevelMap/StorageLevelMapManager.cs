@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DotsStorageManager.StorageLevelMap
@@ -20,6 +21,17 @@ namespace DotsStorageManager.StorageLevelMap
         public void LoadMap(string key)
         {
             storageManger.LoadData<LevelMapData>(key, LoadHandler);
+        }
+
+        public List<string> LoadMapsList()
+        {
+            List<string> maps = new();
+            
+            storageManger.LoadData<MapsList>("all", (val) => {
+                maps = val.MapKeys;
+            });
+
+            return maps;
         }
 
         private void SaveHandler(bool success)
