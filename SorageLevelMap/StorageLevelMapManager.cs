@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace DotsStorageManager.StorageLevelMap
@@ -6,32 +6,53 @@ namespace DotsStorageManager.StorageLevelMap
     public class StorageLevelMapManager
     {
         public LevelMapData CurrentLevelMap { get; set; }
-        public StorageManger storageManger;
+        private StorageManger _storageManger;
+        private MapsList _mapsList;
+        private readonly string folderMap = "Assets/dots_storage_manager/level_map/";
+        private readonly string filenameMapsKeys = "Assets/dots_storage_manager/keys_map";
 
-        public StorageLevelMapManager(StorageManger storage)
+        public StorageLevelMapManager(StorageManger storageManger)
         {
-            storageManger = storage;
+            _storageManger = storageManger;
+            CurrentLevelMap = new();
+            _mapsList = new();
+            _mapsList = LoadMapsList();
         }
 
         public void SaveMap(string key, LevelMapData level)
         {
-            storageManger.SaveData(key, level, SaveHandler);
+            _storageManger.SaveData(folderMap + key, level, SaveHandler);
+            if (!MapKeyCheck(key))
+            {
+                SaveMapsKeysList(key);
+            }
         }
 
         public void LoadMap(string key)
         {
-            storageManger.LoadData<LevelMapData>(key, LoadHandler);
+            if (!MapKeyCheck(key))
+                throw new Exception($"Map key '{key}' don't exist.");
+            
+            _storageManger.LoadData<LevelMapData>(folderMap + key, LoadHandler);
         }
 
-        public List<string> LoadMapsList()
-        {
-            List<string> maps = new();
-            
-            storageManger.LoadData<MapsList>("all", (val) => {
-                maps = val.MapKeys;
+        public MapsList LoadMapsList()
+        {            
+            _storageManger.LoadData<MapsList>(filenameMapsKeys, (val) => {
+                _mapsList = val;
             });
 
-            return maps;
+            return _mapsList;
+        }
+
+        public void SaveMapsKeysList(string new_key)
+        {
+            _mapsList.map_keys.Add(new_key);
+            
+            _storageManger.SaveData(filenameMapsKeys, _mapsList, (success) => {
+                if (success)
+                    Debug.Log($"New key '{new_key}' is saved.");
+            });
         }
 
         private void SaveHandler(bool success)
@@ -45,6 +66,14 @@ namespace DotsStorageManager.StorageLevelMap
         private void LoadHandler(LevelMapData level)
         {
             CurrentLevelMap = level;
+        }
+
+        private bool MapKeyCheck(string key)
+        {
+            if (_mapsList.map_keys.Contains(key)) {
+                return true;
+            }
+            return false;
         }
     }
 }

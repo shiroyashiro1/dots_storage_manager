@@ -14,11 +14,13 @@ namespace DotsStorageManager
 
             using (var fileStream = new StreamReader(path))
             {
+                Debug.Log($"Read json file ({path})");
                 json = fileStream.ReadToEnd();
             }
-            
-            T data = JsonUtility.FromJson<T>(json);
 
+            // Debug.Log($"Load json: {json}");
+
+            T data = JsonUtility.FromJson<T>(json);
             callback?.Invoke(data);
         }
 
@@ -26,6 +28,7 @@ namespace DotsStorageManager
         {
             string path = BuildPath(key);
             string json = JsonUtility.ToJson(data);
+            Debug.Log($"json: {json}");
             
             using (var fileStream = new StreamWriter(path))
             {
@@ -37,7 +40,7 @@ namespace DotsStorageManager
 
         private string BuildPath(string key)
         {
-            return Path.Combine(Application.persistentDataPath, key);
+            return Path.Combine(System.IO.Directory.GetCurrentDirectory(), key + ".json");
         }
     }
 }

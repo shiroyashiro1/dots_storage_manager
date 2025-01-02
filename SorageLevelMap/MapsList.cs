@@ -7,8 +7,11 @@ namespace DotsStorageManager.StorageLevelMap
     [Serializable]
     public class MapsList : IStorageData
     {
-        public List<string> MapKeys { get; }
+        public List<string> map_keys = new();
 
-        public MapsList() { MapKeys = new(); }
+        public override string ToString()
+        {
+            return $"MapKeys: {map_keys}";
+        }
     }
 }
