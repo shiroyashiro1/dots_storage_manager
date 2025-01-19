@@ -5,6 +5,7 @@ namespace DotsStorageManager.ECS
 {
     public class MoveSystem : ISystem
     {
+        // stub
         public void Update(GameObject dot)
         {
             var movC = dot.GetComponent<MoveComponentToUnity>();

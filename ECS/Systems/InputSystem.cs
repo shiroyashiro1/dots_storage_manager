@@ -5,13 +5,10 @@ namespace DotsStorageManager.ECS
 {
     public class InputSystem : ISystem
     {
+        // stub
         public void Update(GameObject dot)
         {
-            var movC = dot.GetComponent<MoveComponentToUnity>();
-            if (movC)
-            {                
-                dot.transform.position += (Vector3)(movC.Direction * movC.Speed * Time.deltaTime);
-            }
+            
         }
     }
 }

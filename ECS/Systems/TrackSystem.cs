@@ -6,6 +6,7 @@ namespace DotsStorageManager.ECS
 {
     public class TrackSystem : ISystem
     {
+        // stub
         public void Update(GameObject dot)
         {
             var movC = dot.GetComponent<TrackMoveComponentToUnity>();

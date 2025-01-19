@@ -1,17 +1,14 @@
-using DotsStorageManager.ECS.ToUnity;
+using System.Collections;
 using UnityEngine;
 
 namespace DotsStorageManager.ECS
 {
     public class ChangeColorSystem : ISystem
     {
+        // stub
         public void Update(GameObject dot)
         {
-            var movC = dot.GetComponent<MoveComponentToUnity>();
-            if (movC)
-            {                
-                dot.transform.position += (Vector3)(movC.Direction * movC.Speed * Time.deltaTime);
-            }
+            var tflC = dot.GetComponent<TrafficLightComponentToUnity>();
         }
     }
 }
